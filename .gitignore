@@ -1,0 +1,29 @@
+# === Environment files ===
+**/.env
+**/.env.local
+**/.env.*.local
+!**/.env.example
+
+# === Backend ===
+backend/target/
+backend/*.jar
+backend/.mvn/wrapper/maven-wrapper.jar
+
+# === Frontend ===
+frontend/node_modules/
+frontend/dist/
+
+# === IDE ===
+.idea/
+*.iml
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# === OS ===
+.DS_Store
+Thumbs.db
+desktop.ini
