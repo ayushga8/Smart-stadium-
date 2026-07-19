@@ -1,14 +1,5 @@
 import { useState, useEffect } from 'react';
-
-const API_BASE = '';
-
-function getAuthHeaders() {
-  const token = localStorage.getItem('accessToken');
-  return {
-    'Content-Type': 'application/json',
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-  };
-}
+import { API_BASE, getAuthHeaders } from '../api';
 
 export default function AdminPanel() {
   const [users, setUsers] = useState([]);
@@ -22,8 +13,6 @@ export default function AdminPanel() {
         fetch(`${API_BASE}/api/admin/users`, { headers: getAuthHeaders() }),
         fetch(`${API_BASE}/api/admin/stats`, { headers: getAuthHeaders() }),
       ]);
-      console.log('Admin users response:', usersRes.status, await usersRes.clone().text());
-      console.log('Admin stats response:', statsRes.status, await statsRes.clone().text());
       if (usersRes.ok) setUsers(await usersRes.json());
       if (statsRes.ok) setStats(await statsRes.json());
     } catch (e) {

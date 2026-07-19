@@ -1,6 +1,6 @@
-const API_BASE = 'https://smart-stadium-api-l7ut.onrender.com';
+export const API_BASE = 'https://smart-stadium-api-l7ut.onrender.com';
 
-function getAuthHeaders() {
+export function getAuthHeaders() {
   const token = localStorage.getItem('accessToken');
   return {
     'Content-Type': 'application/json',
@@ -8,38 +8,9 @@ function getAuthHeaders() {
   };
 }
 
-export async function requestOtp(email) {
-  const res = await fetch(`${API_BASE}/auth/otp/request`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email }),
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({ message: 'Request failed' }));
-    throw err;
-  }
-  return true;
-}
-
-export async function verifyOtp(email, otp) {
-  const res = await fetch(`${API_BASE}/auth/otp/verify`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify({ email, otp }),
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({ message: 'Verification failed' }));
-    throw err;
-  }
-  return res.json();
-}
-
 export function googleLogin() {
   window.location.href = `${API_BASE}/oauth2/authorization/google`;
 }
-
-// === New API endpoints ===
 
 export async function sendChatMessage(message) {
   const res = await fetch(`${API_BASE}/api/ai/chat`, {

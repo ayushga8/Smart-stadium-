@@ -94,10 +94,8 @@ public class AdminController {
         }
 
         long totalUsers = userRepository.count();
-        long volunteers = userRepository.findAll().stream()
-                .filter(u -> u.getRole() == UserRole.VOLUNTEER).count();
-        long admins = userRepository.findAll().stream()
-                .filter(u -> u.getRole() == UserRole.ADMIN).count();
+        long volunteers = userRepository.countByRole(UserRole.VOLUNTEER);
+        long admins = userRepository.countByRole(UserRole.ADMIN);
 
         return ResponseEntity.ok(Map.of(
                 "totalUsers", totalUsers,

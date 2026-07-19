@@ -1,17 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { getMatches, getCrowdData } from '../api';
 import Sidebar from './Sidebar';
 import TopBar from './TopBar';
-import AiAssistant from './AiAssistant';
-import MatchSchedule from './MatchSchedule';
-import StadiumMap from './StadiumMap';
-import TransportHub from './TransportHub';
-import AccessibilityCenter from './AccessibilityCenter';
-import SustainabilityDashboard from './SustainabilityDashboard';
-import SecurityOps from './SecurityOps';
-import AnalyticsInsights from './AnalyticsInsights';
-import VolunteerHub from './VolunteerHub';
-import AdminPanel from './AdminPanel';
+
+// Lazy-loaded pages — only loaded when navigated to
+const AiAssistant = lazy(() => import('./AiAssistant'));
+const MatchSchedule = lazy(() => import('./MatchSchedule'));
+const StadiumMap = lazy(() => import('./StadiumMap'));
+const TransportHub = lazy(() => import('./TransportHub'));
+const AccessibilityCenter = lazy(() => import('./AccessibilityCenter'));
+const SustainabilityDashboard = lazy(() => import('./SustainabilityDashboard'));
+const SecurityOps = lazy(() => import('./SecurityOps'));
+const AnalyticsInsights = lazy(() => import('./AnalyticsInsights'));
+const VolunteerHub = lazy(() => import('./VolunteerHub'));
+const AdminPanel = lazy(() => import('./AdminPanel'));
+
+function PageLoader() {
+  return (
+    <div className="flex items-center justify-center h-64">
+      <span className="material-symbols-outlined text-primary-fixed-dim animate-spin text-4xl">progress_activity</span>
+    </div>
+  );
+}
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
@@ -67,9 +77,13 @@ export default function Dashboard() {
       <Sidebar activePage={page} onNavigate={setPage} userRole={user.role} />
       <TopBar />
       <main className="ml-64 pt-16 min-h-screen p-grid-margin">
-        {renderPage()}
+        <Suspense fallback={<PageLoader />}>
+          {renderPage()}
+        </Suspense>
       </main>
-      <AiAssistant />
+      <Suspense fallback={null}>
+        <AiAssistant />
+      </Suspense>
     </div>
   );
 }
