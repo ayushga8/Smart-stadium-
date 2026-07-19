@@ -13,6 +13,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.time.LocalDateTime;
@@ -36,6 +37,11 @@ class AuthServiceTest {
 
     @InjectMocks
     private AuthService authService;
+
+    @BeforeEach
+    void setUp() {
+        ReflectionTestUtils.setField(authService, "adminEmail", "ayushgdg18@gmail.com");
+    }
 
     @Nested
     @DisplayName("OTP verification login")

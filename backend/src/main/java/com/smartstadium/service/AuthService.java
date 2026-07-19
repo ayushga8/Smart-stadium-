@@ -6,6 +6,7 @@ import com.smartstadium.entity.User;
 import com.smartstadium.entity.UserRole;
 import com.smartstadium.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,8 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private static final String ADMIN_EMAIL = "ayushgdg18@gmail.com";
+    @Value("${app.admin-email}")
+    private String adminEmail;
 
     private final UserRepository userRepository;
     private final OtpService otpService;
@@ -70,7 +72,7 @@ public class AuthService {
     }
 
     private void assignRoleIfNeeded(User user) {
-        if (ADMIN_EMAIL.equalsIgnoreCase(user.getEmail())) {
+        if (adminEmail.equalsIgnoreCase(user.getEmail())) {
             user.setRole(UserRole.ADMIN);
         }
     }

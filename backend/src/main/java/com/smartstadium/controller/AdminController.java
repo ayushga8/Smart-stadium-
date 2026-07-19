@@ -5,6 +5,7 @@ import com.smartstadium.entity.UserRole;
 import com.smartstadium.repository.UserRepository;
 import com.smartstadium.service.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AdminController {
 
-    private static final String ADMIN_EMAIL = "ayushgdg18@gmail.com";
+    @Value("${app.admin-email}")
+    private String adminEmail;
 
     private final JwtService jwtService;
     private final UserRepository userRepository;
@@ -73,7 +75,7 @@ public class AdminController {
         return userRepository.findById(userId)
                 .map(user -> {
                     // Prevent changing admin's own role
-                    if (ADMIN_EMAIL.equalsIgnoreCase(user.getEmail())) {
+                    if (adminEmail.equalsIgnoreCase(user.getEmail())) {
                         return ResponseEntity.badRequest()
                                 .body((Object) Map.of("message", "Cannot change admin role"));
                     }
@@ -109,7 +111,7 @@ public class AdminController {
         try {
             String token = authHeader.replace("Bearer ", "");
             String email = jwtService.extractEmail(token);
-            return ADMIN_EMAIL.equalsIgnoreCase(email);
+            return adminEmail.equalsIgnoreCase(email);
         } catch (Exception e) {
             return false;
         }

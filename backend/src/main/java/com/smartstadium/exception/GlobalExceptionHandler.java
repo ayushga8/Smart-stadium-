@@ -13,6 +13,11 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleUserNotFound(UserNotFoundException ex) {
+        return buildResponse(HttpStatus.NOT_FOUND, "User Not Found", ex.getMessage());
+    }
+
     @ExceptionHandler(InvalidOtpException.class)
     public ResponseEntity<ErrorResponseDto> handleInvalidOtp(InvalidOtpException ex) {
         return buildResponse(HttpStatus.UNAUTHORIZED, "Invalid OTP", ex.getMessage());

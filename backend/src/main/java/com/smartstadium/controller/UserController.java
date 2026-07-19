@@ -1,6 +1,7 @@
 package com.smartstadium.controller;
 
 import com.smartstadium.entity.User;
+import com.smartstadium.exception.UserNotFoundException;
 import com.smartstadium.repository.UserRepository;
 import com.smartstadium.service.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class UserController {
         String token = authHeader.replace("Bearer ", "");
         String email = jwtService.extractEmail(token);
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException(email));
 
         return ResponseEntity.ok(Map.of(
                 "id", user.getId(),

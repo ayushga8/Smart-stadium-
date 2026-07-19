@@ -9,6 +9,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -25,6 +26,11 @@ class RoleAssignmentTest {
     @Mock private OtpService otpService;
     @Mock private JwtService jwtService;
     @InjectMocks private AuthService authService;
+
+    @BeforeEach
+    void setUp() {
+        ReflectionTestUtils.setField(authService, "adminEmail", "ayushgdg18@gmail.com");
+    }
 
     @Nested
     @DisplayName("Admin auto-assignment on OTP login")

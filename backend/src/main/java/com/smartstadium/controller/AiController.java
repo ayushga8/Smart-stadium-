@@ -4,6 +4,7 @@ import com.smartstadium.dto.ChatRequestDto;
 import com.smartstadium.dto.ChatResponseDto;
 import com.smartstadium.entity.ChatMessage;
 import com.smartstadium.entity.User;
+import com.smartstadium.exception.UserNotFoundException;
 import com.smartstadium.repository.UserRepository;
 import com.smartstadium.service.AiService;
 import com.smartstadium.service.JwtService;
@@ -60,7 +61,7 @@ public class AiController {
         String token = authHeader.replace("Bearer ", "");
         String email = jwtService.extractEmail(token);
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException(email));
         return user.getId();
     }
 }
