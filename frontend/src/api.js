@@ -1,4 +1,4 @@
-const API_BASE = '';
+const API_BASE = 'https://smart-stadium-api-l7ut.onrender.com';
 
 function getAuthHeaders() {
   const token = localStorage.getItem('accessToken');
